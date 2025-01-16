@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Table Image</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px; /* Adjust the padding value as needed */
+        }
+        a{
+            color:black;
+        }
+    </style>
+
+    <script>
+        function removeColumns() {
+            const table = document.querySelector('table');
+            const rows = table.rows;
+            const headersToRemove = ['SER', 'GLU', 'PRO', 'GLY', 'ALA', 'ARG'];
+            const columnsToRemove = [];
+
+            // Find the indices of the columns to remove
+            for (let i = 0; i < rows[0].cells.length; i++) {
+                if (headersToRemove.includes(rows[0].cells[i].innerText)) {
+                    columnsToRemove.push(i);
+                }
+            }
+
+            for (let i = 0; i < rows.length; i++) {
+                for (let j = columnsToRemove.length - 1; j >= 0; j--) {
+                    rows[i].deleteCell(columnsToRemove[j]);
+                }
+            }
+        }
+
+        document.getElementById('combine-button').addEventListener('click', () => {
+      const table = document.getElementById('data-tablee');
+      const rows = table.querySelectorAll('tbody tr');
+
+      const headerRow = table.querySelector('thead tr');
+      const newHeader = document.createElement('th');
+      newHeader.textContent = 'MC';
+      headerRow.appendChild(newHeader);
+
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const met = cells[0].textContent; 
+        const cys = cells[1].textContent; 
+
+        const newCell = document.createElement('td');
+        newCell.textContent = `${met}${cys}`; // Combine MET and CYS
+        row.appendChild(newCell);
+      });
+    });
+    </script>
+</head>
+<body>
+    <h1>Upload Table Image</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    <button onclick="removeColumns()">Remove Non Essential Amino Acids</button>
+    <button id="combine-button">Combine MET with CYS and PHE with TYR</button>
+
+    {% if table_data %}
+        <h2>Extracted Table Data</h2>
+        <table border="1" id="data-tablee">
+            {% for row in table_data %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <a href="{{ url_for('download_csv') }}" download>Download CSV</a>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+    <h1>Extracted Tables</h1>
+    <form action="{{ url_for('main.extract_csv') }}" method="post">
+        <div class="table-container">
+            {% for table in tables %}
+            <div class="table-row">
+                <input type="radio" name="selected_table" value="{{ table }}" id="table_{{ loop.index }}" required>
+                <label for="table_{{ loop.index }}">
+                    <img src="{{ url_for('static', filename=table.replace('static/', '')) }}" class="table-image">
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="extract-btn">Extract to CSV</button>
+    </form>
+    <a href="{{ url_for('main.upload_file') }}" class="back-btn">Process another PDF</a>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .table-row {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        gap: 20px;
+    }
+    
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .table-image {
+        max-width: 90%;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    
+    .extract-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 20px 0;
+    }
+    
+    .extract-btn:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}

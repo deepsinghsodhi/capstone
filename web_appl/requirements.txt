@@ -12,3 +12,8 @@ pip install pytesseract pandas opencv-python
 Install Tesseract OCR on your system:
 For Windows:
 Download the installer from: https://github.com/UB-Mannheim/tesseract/wiki
+
+
+
+brew install poppler
+pip install transformers torch pdf2image Pillow

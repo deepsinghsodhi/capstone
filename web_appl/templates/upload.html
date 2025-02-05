@@ -1,14 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}Upload{% endblock %}
+{% block title %}Upload PDF{% endblock %}
 
 {% block content %}
-    <h1>PDF Table Extractor</h1>
-    <div class="upload-container">
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".pdf" required>
-            <br>
-            <input type="submit" value="Upload and Process" class="upload-btn">
-        </form>
-    </div>
+<div class="upload-container">
+    <h1>Upload PDF File</h1>
+    <form action="{{ url_for('main.upload_file') }}" method="post" enctype="multipart/form-data">
+        <div class="upload-box">
+            <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required>
+            <label for="pdf_file" class="file-label">
+                Choose a PDF file or drag it here
+            </label>
+        </div>
+        <button type="submit" class="upload-btn">Upload and Process</button>
+    </form>
+</div>
+
+{% block extra_styles %}
+<style>
+    .upload-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .upload-box {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 40px 20px;
+        margin: 20px 0;
+        position: relative;
+    }
+
+    input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .file-label {
+        color: #666;
+        font-size: 1.2em;
+    }
+
+    .upload-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+    }
+
+    .upload-btn:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}
 {% endblock %}
